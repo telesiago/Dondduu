@@ -11,11 +11,11 @@ import styled from "styled-components";
    width: 100%;
    border-collapse: separate;
    border-spacing: 0 0.5rem;
-   /* margin-top: 1.5rem; */
+   margin-top: 1.5rem;
  
    td {
      padding: 1.25rem 2rem;
-     background: ${props => props.theme["gray-700"]};
+     background: ${(props) => props.theme["gray-700"]};
  
      &:first-child {
        border-top-left-radius: 6px;
@@ -34,5 +34,5 @@ import styled from "styled-components";
  }
  
  export const PriceHighlight = styled.span<PriceHighlightProps>`
-   color: ${props => props.variant === "income" ? props.theme["green-300"] : props.theme["red-300"]};
+   color: ${(props) => props.variant === "income" ? props.theme["green-300"] : props.theme["red-300"]};
  `;

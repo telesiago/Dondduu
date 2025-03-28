@@ -18,7 +18,7 @@ import styled, { css } from "styled-components";
  }
  
  export const SummaryCard = styled.div<SummaryCardProps>`
-   background: ${props => props.theme["gray-600"]};
+   background: ${(props) => props.theme["gray-600"]};
    border-radius: 6px;
    padding: 2rem;
  
@@ -26,7 +26,7 @@ import styled, { css } from "styled-components";
      display: flex;
      align-items: center;
      justify-content: space-between;
-     color: ${props => props.theme["gray-300"]};
+     color: ${(props) => props.theme["gray-300"]};
    }
  
    strong {
@@ -35,7 +35,7 @@ import styled, { css } from "styled-components";
      font-size: 2rem;
    }
  
-   ${props => props.variant === 'green' && css`
+   ${(props) => props.variant === 'green' && css`
      background: ${props.theme["green-700"]}
    `}
  `;
