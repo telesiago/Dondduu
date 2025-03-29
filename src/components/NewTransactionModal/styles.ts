@@ -1,16 +1,16 @@
 import styled from "styled-components";
- import * as Dialog from '@radix-ui/react-dialog';
- import * as RadioGroup from '@radix-ui/react-radio-group';
- 
- export const Overlay = styled(Dialog.Overlay)`
+import * as Dialog from '@radix-ui/react-dialog';
+import * as RadioGroup from '@radix-ui/react-radio-group';
+
+export const Overlay = styled(Dialog.Overlay)`
    position: fixed;
    width: 100vw;
    height: 100vh;
    inset: 0;
    background: rgba(0, 0, 0, 0.75);
  `;
- 
- export const Content = styled(Dialog.Content)`
+
+export const Content = styled(Dialog.Content)`
    min-width: 32rem;
    border-radius: 6px;
    padding: 2.5rem 3rem;
@@ -63,8 +63,8 @@ import styled from "styled-components";
      }
    }
  `;
- 
- export const CloseButton = styled(Dialog.Close)`
+
+export const CloseButton = styled(Dialog.Close)`
    position: absolute;
    background: transparent;
    border: 0;
@@ -86,7 +86,7 @@ interface TransactionTypeButtonProps {
   variant: 'income' | 'outcome';
 }
 
-export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButtonProps>`
+export const TransactionTypeButton = styled(RadioGroup.Item) <TransactionTypeButtonProps>`
   background: ${(props) => props.theme["gray-700"]};
   padding: 1rem;
   display: flex;

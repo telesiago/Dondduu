@@ -23,6 +23,14 @@
       "category": "Educação",
       "price": 1980,
       "createdAt": "2025-03-28T16:00:44.505Z"
-    } 
+    },
+    {
+      "description": "Pastel",
+      "price": 5,
+      "category": "Alimentação",
+      "type": "outcome",
+      "createdAt": "2025-03-29T18:37:06.240Z",
+      "id": 4
+    }
   ]
 }
