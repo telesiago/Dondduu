@@ -25,6 +25,14 @@ import styled from "styled-components";
      &:last-child {
        border-top-right-radius: 6px;
        border-bottom-right-radius: 6px;
+       
+     }
+
+     svg {
+      line-height: 0;
+      border: 0;  
+      background:  ${(props) => props.theme["gray-700"]};
+      cursor: pointer;
      }
    }
  `;

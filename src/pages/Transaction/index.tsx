@@ -6,10 +6,11 @@ import { SearchForm } from "./components/SearchForm";
 import { PriceHighlight, TransactionsContainer, TransactionsTable } from "./styles";
 import { TransactionsContext } from "../../contexts/TransactionsContext";
 import { dateFormatter, priceFormatter } from "../../utils/formatter";
+import { Trash } from "phosphor-react";
 
 
 export function Transactions() {
-  const { transactions } = useContext(TransactionsContext)
+  const { transactions, deleteTransaction } = useContext(TransactionsContext)
 
   return(
     <div>
@@ -23,7 +24,7 @@ export function Transactions() {
            {transactions.map(transaction => {
               return (
                 <tr key={transaction.id}>
-                  <td width="50%">{transaction.description}</td>
+                  <td width="40%">{transaction.description}</td>
                   <td>
                     <PriceHighlight variant={transaction.type}>
                       {transaction.type === 'outcome' && '- '}
@@ -32,6 +33,9 @@ export function Transactions() {
                   </td>
                   <td>{transaction.category}</td>
                   <td>{dateFormatter.format(new Date(transaction.createdAt))}</td>
+                  <td>
+                    <Trash size={24} color={'#F75A68'} onClick={()=> deleteTransaction(transaction.id)}/>
+                  </td>
                 </tr>
               )
             })}

@@ -9,7 +9,6 @@ export function Header() {
     <HeaderContainer>
       <HeaderContent>
         <img src={logoImg} alt="" />
-        {/* <NewTransactionButton>Nova Transação</NewTransactionButton> */}
 
         <Dialog.Root>
           <Dialog.Trigger asChild>
