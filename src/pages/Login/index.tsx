@@ -38,8 +38,10 @@ export default function Login() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       navigate("/dashboard");
-    } catch {
+    } catch(error) {
       setErro("Erro ao fazer login com o Google.");
+      console.log(error);
+      
     }
   };
 

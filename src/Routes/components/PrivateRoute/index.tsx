@@ -7,14 +7,13 @@ import { Loading } from "../Loading";
 interface PrivateRouteProps {
     children: ReactNode;
 }
-const loading = true
+const loading = true;
 export function PrivateRoute({ children }: PrivateRouteProps) {
     const { user } = useAuth();
-   
 
     if (loading) {
         return <Loading/>; // ou um spinner
     }
-
+    console.log(user)
     return user ? children : <Navigate to="/" />;
 }

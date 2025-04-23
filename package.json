@@ -16,6 +16,7 @@
     "@radix-ui/react-radio-group": "^1.2.3",
     "axios": "^1.8.4",
     "firebase": "^11.6.0",
+    "framer-motion": "^12.8.0",
     "phosphor-react": "^1.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
