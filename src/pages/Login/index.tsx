@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  sendPasswordResetEmail
 } from "firebase/auth";
 import { auth } from "../../lib/firebase";
 
@@ -16,6 +17,7 @@ import {
   Button,
   GoogleButton,
   Error,
+  ForgotPassword,
 } from "./styles";
 
 export default function Login() {
@@ -38,10 +40,23 @@ export default function Login() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       navigate("/dashboard");
-    } catch(error) {
+    } catch (error) {
       setErro("Erro ao fazer login com o Google.");
       console.log(error);
-      
+
+    }
+  };
+
+  const recuperarSenha = async () => {
+    if (!email) {
+      setErro("Informe seu email para recuperar a senha.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setErro("Email de recuperação enviado.");
+    } catch {
+      setErro("Erro ao enviar email de recuperação.");
     }
   };
 
@@ -67,6 +82,11 @@ export default function Login() {
 
       <Button onClick={loginEmailSenha}>Entrar</Button>
       <GoogleButton onClick={loginGoogle}>Entrar com Google</GoogleButton>
+      <Button onClick={() => navigate('/createAccount')}>Criar Conta</Button>
+
+      <ForgotPassword onClick={recuperarSenha}>
+        Esqueceu sua senha?
+      </ForgotPassword>
     </Container>
   );
 }

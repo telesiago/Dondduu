@@ -1,5 +1,20 @@
-// src/pages/Login.styles.ts
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+export const Spinner = styled.div`
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid ${(props) => props.theme["green-500"]};
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: ${spin} 1s linear infinite;
+  margin: 0 auto;
+`;
+
 
 export const Container = styled.div`
   min-height: 100vh;
@@ -10,12 +25,6 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 2rem;
-`;
-
-export const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
 `;
 
 export const Input = styled.input`
@@ -43,15 +52,20 @@ export const Button = styled.button`
   margin-bottom: 1rem;
   transition: background-color 0.2s;
 
-  &:hover {
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &:not(:disabled):hover {
     background-color: ${(props) => props.theme["green-700"]};
   }
 `;
 
-export const GoogleButton = styled(Button)`
+export const BackLogin = styled(Button)`
   background-color: white;
   color: ${(props) => props.theme["gray-900"]};
-
+ 
   &:hover {
     background-color: #e2e2e2;
   }
@@ -65,17 +79,4 @@ export const Error = styled.p`
 export const Logo = styled.img`
   width: 20rem;
   margin-bottom: 3rem;
-`;
-
-export const ForgotPassword = styled.p`
-  color: ${(props) => props.theme["green-500"]};
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.2s;
-
-  &:hover {
-    color: ${(props) => props.theme["green-300"]};
-  }
 `;

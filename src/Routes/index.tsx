@@ -2,6 +2,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Login from "../pages/Login";
 import { Dashboard } from "../pages/Dashboard";
 import { PrivateRoute } from "./components/PrivateRoute";
+import CreateAccount from "../pages/CreateAccount";
 
 export function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export function AppRoutes() {
               <Dashboard />
             </PrivateRoute>
           } />
+        <Route path="/createAccount" element={<CreateAccount />} />
       </Routes>
     </BrowserRouter>
   );

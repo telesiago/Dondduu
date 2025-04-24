@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
 import { auth, db } from '../lib/firebase';
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
 
@@ -26,7 +26,7 @@ interface TransactionContextType {
 }
 
 interface TransactionsProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export const TransactionsContext = createContext({} as TransactionContextType);
@@ -35,14 +35,12 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const userId = auth.currentUser?.uid;
 
-  async function fetchTransactions(queryText: string = '') {
-
-    if(!userId) {
-      console.log('Usuário não autenticado.')
-      setTransactions([]);
+  const fetchTransactions = useCallback(async (queryText: string = '') => {
+    if (!userId) {
+      console.log('Usuário não autenticado.');
       return;
     }
-    
+
     try {
       const transactionsColletcionRef = collection(db, 'users', userId, 'transactions');
       const q = query(
@@ -56,47 +54,37 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
 
       querySnapshot.forEach((doc) => {
         transactionsData.push({
-          id: doc.id, // O ID do documento do Firestore é uma string
+          id: doc.id,
           description: doc.data().description,
           type: doc.data().type,
           price: doc.data().price,
           category: doc.data().category,
-          createdAt: new Date(doc.data().createdAt.seconds * 1000).toISOString(), // Converte Timestamp para string ISO
+          createdAt: new Date(doc.data().createdAt.seconds * 1000).toISOString(),
         });
-      })
+      });
 
-      setTransactions(transactionsData)
+      setTransactions(transactionsData);
     } catch (error) {
       console.error('Erro ao buscar transações do Firestore:', error);
     }
-  }
+  }, [userId]);
 
   async function createTransaction(data: CreateTransactionInput) {
-    if(!userId){
+    if (!userId) {
       console.log('Erro ao criar. Usuário não autenticado.');
       return;
     }
 
     const { description, price, category, type } = data;
 
-    // const response = await api.post('transactions', {
-    //   description,
-    //   price,
-    //   category,
-    //   type,
-    //   createdAt: new Date(),
-    // });
-
-    // setTransactions(state => [response.data, ...state])
-
     try {
       const transactionsCollectionRef = collection(db, 'users', userId, 'transactions');
 
       const newTransaction = {
-        description: description,
-        price: price,
-        category: category,
-        type: type,
+        description,
+        price,
+        category,
+        type,
         createdAt: Timestamp.now(),
       };
 
@@ -107,17 +95,13 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         createdAt: new Date(newTransaction.createdAt.seconds * 1000).toISOString(),
       } as Transaction;
 
-      setTransactions(state => [newTransactionData, ...state]);
+      setTransactions((state) => [newTransactionData, ...state]);
     } catch (error) {
       console.error('Erro ao criar transação no Firestore:', error);
     }
   }
 
   async function deleteTransaction(id: string) {
-    // await api.delete(`transactions/${id}`)
-
-    // setTransactions(state => state.filter(item => item.id !== id))
-
     if (!userId) {
       console.log('Usuário não autenticado.');
       return;
@@ -126,15 +110,21 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     try {
       const transactionDocRef = doc(db, 'users', userId, 'transactions', id);
       await deleteDoc(transactionDocRef);
-      setTransactions(state => state.filter(transaction => transaction.id !== id));
+      setTransactions((state) => state.filter((transaction) => transaction.id !== id));
     } catch (error) {
       console.error('Erro ao deletar transação do Firestore:', error);
     }
   }
 
   useEffect(() => {
-    fetchTransactions()
-  }, [userId]);
+    fetchTransactions();
+  }, [fetchTransactions]);
+
+  // useEffect(() => {
+  //   if (userId) {
+  //     fetchTransactions();
+  //   }
+  // }, [userId]);
 
   return (
     <TransactionsContext.Provider value={{
