@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { breakpoints } from "../../styles/media";
 
 export const HeaderContainer = styled.header`
   background: ${(props) => props.theme['gray-900']};
@@ -15,6 +16,11 @@ export const HeaderContent = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  @media (max-width: ${breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
 `;
 
 export const NewTransactionButton = styled.button`
@@ -26,14 +32,13 @@ export const NewTransactionButton = styled.button`
   padding: 0 1.25rem;
   border-radius: 6px;
   cursor: pointer;
-  
 
   &:hover {
     background: ${(props) => props.theme['green-700']};
     transition: background-color 0.2s;
   }
-
 `;
+
 export const SignOutButton = styled.button`
   height: 3.125rem;
   border: 0;
@@ -43,11 +48,9 @@ export const SignOutButton = styled.button`
   padding: 0 1.25rem;
   border-radius: 6px;
   cursor: pointer;
-  
 
   &:hover {
     background: ${(props) => props.theme['red-700']};
     transition: background-color 0.2s;
   }
-
 `;

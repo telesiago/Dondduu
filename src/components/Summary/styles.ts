@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { breakpoints } from "../../styles/media";
  
  export const SummaryContainer = styled.section`
    width: 100%;
@@ -11,6 +12,10 @@ import styled, { css } from "styled-components";
    gap: 2rem;
  
    margin-top: -5rem;
+
+   @media (max-width: ${breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
  `;
  
  interface SummaryCardProps {

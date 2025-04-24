@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
-import { auth, db } from '../lib/firebase';
+import { db } from '../lib/firebase';
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { useAuth } from './AuthContext';
 
 interface Transaction {
   id: string;
@@ -33,9 +34,12 @@ export const TransactionsContext = createContext({} as TransactionContextType);
 
 export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const userId = auth.currentUser?.uid;
+  const {user} = useAuth();
+  const userId = user?.uid;
 
   const fetchTransactions = useCallback(async (queryText: string = '') => {
+    console.log('uid', userId)
+    console.log("reload")
     if (!userId) {
       console.log('Usuário não autenticado.');
       return;
@@ -119,12 +123,6 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   useEffect(() => {
     fetchTransactions();
   }, [fetchTransactions]);
-
-  // useEffect(() => {
-  //   if (userId) {
-  //     fetchTransactions();
-  //   }
-  // }, [userId]);
 
   return (
     <TransactionsContext.Provider value={{

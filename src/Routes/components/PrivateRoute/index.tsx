@@ -13,6 +13,5 @@ export function PrivateRoute({ children }: PrivateRouteProps) {
     if (loading) {
         return <Loading/>; // ou um spinner
     }
-    console.log(user)
     return user ? children : <Navigate to="/" />;
 }
