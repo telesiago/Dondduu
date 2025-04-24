@@ -57,10 +57,20 @@ export function Dashboard() {
         <CardList>
           {transactions.map((transaction) => (
             <TransactionCard key={transaction.id}>
-              <div className="description">{transaction.description}</div>
-              <div className={`price ${transaction.type}`}>
-                {transaction.type === "outcome" && "- "}
-                {priceFormatter.format(transaction.price)}
+              <div className="contentCard">
+                <div>
+                  <div className="description">{transaction.description}</div>
+                  <div className={`price ${transaction.type}`}>
+                    {transaction.type === "outcome" && "- "}
+                    {priceFormatter.format(transaction.price)}
+                  </div>
+
+                </div>
+                <Trash
+                  size={24}
+                  color={"#F75A68"}
+                  onClick={() => deleteTransaction(transaction.id)}
+                />
               </div>
               <footer>
                 <span>{transaction.category}</span>

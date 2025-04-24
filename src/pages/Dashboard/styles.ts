@@ -87,6 +87,11 @@ export const TransactionCard = styled.div`
     }
   }
 
+  .contentCard {
+    display: flex;
+    justify-content: space-between;
+  }
+
   footer {
     display: flex;
     justify-content: space-between;
