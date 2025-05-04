@@ -19,6 +19,7 @@ import {
   Error,
   ForgotPassword,
 } from "./styles";
+import { AdBanner } from "../../components/AdBanner";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -87,6 +88,8 @@ export default function Login() {
       <ForgotPassword onClick={recuperarSenha}>
         Esqueceu sua senha?
       </ForgotPassword>
+
+      <AdBanner slot="8378202361" />
     </Container>
   );
 }

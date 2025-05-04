@@ -16,6 +16,7 @@ import {
   BackLogin,
   Spinner,
 } from "./styles";
+import { AdBanner } from "../../components/AdBanner";
 
 export default function CreateAccount() {
   const [email, setEmail] = useState("");
@@ -67,6 +68,8 @@ export default function CreateAccount() {
       <Button onClick={criarConta} disabled={loading}>
       {loading ? <Spinner />: "Criar Conta"}</Button> 
       <BackLogin onClick={() => navigate("/")}>Voltar ao Login</BackLogin>
+
+      <AdBanner slot="8378202361" />
     </Container>
   );
 }

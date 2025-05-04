@@ -13,16 +13,20 @@ import {
 import { TransactionsContext } from "../../contexts/TransactionsContext";
 import { dateFormatter, priceFormatter } from "../../utils/formatter";
 import { Trash } from "phosphor-react";
+import { AdBanner } from "../../components/AdBanner";
+import { MonthFilter } from "./components/MonthFilter";
 
 export function Dashboard() {
   const { transactions, deleteTransaction } = useContext(TransactionsContext);
 
   return (
     <div>
+      <AdBanner slot="8378202361" />
       <Header />
       <Summary />
 
       <TransactionsContainer>
+        <MonthFilter/>
         <SearchForm />
 
         {/* Tabela Desktop */}

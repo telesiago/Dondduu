@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
 import { db } from '../lib/firebase';
-import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, QueryConstraint, Timestamp, where } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
 
 interface Transaction {
@@ -21,7 +21,7 @@ interface CreateTransactionInput {
 
 interface TransactionContextType {
   transactions: Transaction[];
-  fetchTransactions: (query?: string) => Promise<void>;
+  fetchTransactions: (query?: string, selectedMonth?: string | null) => Promise<void>;
   createTransaction: (data: CreateTransactionInput) => Promise<void>;
   deleteTransaction: (id: string) => void;
 }
@@ -37,22 +37,37 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const {user} = useAuth();
   const userId = user?.uid;
 
-  const fetchTransactions = useCallback(async (queryText: string = '') => {
-    console.log('uid', userId)
-    console.log("reload")
+  const fetchTransactions = useCallback(
+    async (queryText: string = '', selectedMonth: string | null = new Date().toISOString().slice(0, 7)) => {
+    
     if (!userId) {
       console.log('Usuário não autenticado.');
       return;
     }
 
     try {
-      const transactionsColletcionRef = collection(db, 'users', userId, 'transactions');
-      const q = query(
-        transactionsColletcionRef,
-        orderBy('createdAt', 'desc'),
-        ...(queryText ? [where('description', '>=', queryText), where('description', '<=', queryText + '\uf8ff')] : [])
-      );
+      const transactionsCollectionRef = collection(db, 'users', userId, 'transactions');
+      const conditions: QueryConstraint[] = [orderBy('createdAt', 'desc')];
 
+      if(queryText){
+        conditions.push(
+          where('description', '>=', queryText),
+          where('description', '<=', queryText + '\uf8ff')
+        );
+      }
+
+      if (selectedMonth) {
+        const [year, month] = selectedMonth.split('-').map(Number);
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0, 23, 59, 59);
+
+        conditions.push(
+          where('createdAt', '>=', Timestamp.fromDate(start)),
+          where('createdAt', '<=', Timestamp.fromDate(end))
+        );
+      }
+
+      const q = query(transactionsCollectionRef, ...conditions);
       const querySnapshot = await getDocs(q);
       const transactionsData: Transaction[] = [];
 
