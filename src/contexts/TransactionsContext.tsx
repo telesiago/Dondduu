@@ -2,6 +2,7 @@ import { createContext, ReactNode, useCallback, useEffect, useState } from 'reac
 import { db } from '../lib/firebase';
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, QueryConstraint, Timestamp, where } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
+import { combineDateWithCurrentTime } from '../utils/formatter';
 
 interface Transaction {
   id: string;
@@ -17,6 +18,7 @@ interface CreateTransactionInput {
   price: number;
   category: string;
   type: 'income' | 'outcome';
+  createdAt: string;
 }
 
 interface TransactionContextType {
@@ -94,7 +96,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       return;
     }
 
-    const { description, price, category, type } = data;
+    const { description, price, category, type, createdAt } = data;
 
     try {
       const transactionsCollectionRef = collection(db, 'users', userId, 'transactions');
@@ -104,7 +106,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         price,
         category,
         type,
-        createdAt: Timestamp.now(),
+        createdAt: Timestamp.fromDate(combineDateWithCurrentTime(createdAt)),
       };
 
       const docRef = await addDoc(transactionsCollectionRef, newTransaction);
@@ -112,7 +114,9 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         id: docRef.id,
         ...newTransaction,
         createdAt: new Date(newTransaction.createdAt.seconds * 1000).toISOString(),
+
       } as Transaction;
+
 
       setTransactions((state) => [newTransactionData, ...state]);
     } catch (error) {

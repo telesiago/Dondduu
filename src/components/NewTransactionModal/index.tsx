@@ -7,12 +7,14 @@ import * as z from 'zod';
 import { CloseButton, Content, Overlay, TransactionType, TransactionTypeButton } from './styles';
 import { useContext } from 'react';
 import { TransactionsContext } from '../../contexts/TransactionsContext';
+import { getTodayDateString } from '../../utils/formatter';
 
 const newTransactionFormSchema = z.object({
   description: z.string(),
   price: z.number(),
   category: z.string(),
   type: z.enum(['income', 'outcome']),
+  createdAt: z.string(),
 });
 
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>;
@@ -29,22 +31,27 @@ export function NewTransactionModal() {
   } = useForm<NewTransactionFormInputs>({
     resolver: zodResolver(newTransactionFormSchema),
     defaultValues: {
-      type: 'income'
+      type: 'income',
+      createdAt: getTodayDateString()
     }
   })
 
+
+
   async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
-    const { description, price, category, type } = data;
+    const { description, price, category, type, createdAt } = data;
 
     await createTransaction({
       description,
       price,
       category,
       type,
+      createdAt,
     });
 
     reset()
   }
+
   return (
     <Dialog.Portal>
       <Overlay />
@@ -57,6 +64,11 @@ export function NewTransactionModal() {
         </CloseButton>
 
         <form onSubmit={handleSubmit(handleCreateNewTransaction)}>
+          <input
+            type="date"
+            id="month"
+            {...register('createdAt')}
+          />
           <input
             type="text"
             placeholder="Descrição"

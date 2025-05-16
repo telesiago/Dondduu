@@ -45,6 +45,10 @@ export const Content = styled(Dialog.Content)`
        background: ${(props) => props.theme["gray-900"]};
        color: ${(props) => props.theme["gray-300"]};
        padding: 1rem;
+
+       &::-webkit-calendar-picker-indicator {
+        filter: invert(1); /* Para ícone branco no dark mode */
+      }
  
        &::placeholder {
          color: ${(props) => props.theme["gray-500"]};
